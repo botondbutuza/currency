@@ -8,11 +8,11 @@ import dagger.Provides;
  */
 
 @Module
-public class MainModule {
+class MainModule {
 
     private MainActivity view;
 
-    public MainModule(MainActivity view) {
+    MainModule(MainActivity view) {
         this.view = view;
     }
 

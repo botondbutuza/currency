@@ -30,7 +30,8 @@ public class CurrencyRepository implements DataSource {
 
     @Override
     public Single<CurrencyResponse> getFor(int year, int month, int day) {
-        String date = year + "-" + (month < 10 ? "0" : "") + month + "-" + day;
+        String date = year + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;
+        log("get for, date="+date);
 
         return localDataSource.getCurrency(date)
             .subscribeOn(Schedulers.io())
@@ -49,5 +50,12 @@ public class CurrencyRepository implements DataSource {
     @Override
     public Maybe<CurrencyResponse> getCurrency(String date) {
         throw new UnsupportedOperationException();
+    }
+
+
+    // Internal.
+
+    private void log(String msg) {
+        Log.e("CurrencyRepository", msg);
     }
 }
