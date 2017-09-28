@@ -17,7 +17,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import uk.co.botondbutuza.currency.BuildConfig;
-import uk.co.botondbutuza.currency.dagger.scope.ActivityScope;
 import uk.co.botondbutuza.currency.dagger.scope.Remote;
 import uk.co.botondbutuza.currency.data.DataSource;
 import uk.co.botondbutuza.currency.data.ServerInterface;
@@ -56,23 +55,23 @@ public class RemoteDataSourceModule {
             builder.addInterceptor(interceptor);
         }
 
-        builder.connectTimeout(5, TimeUnit.SECONDS);
-        builder.readTimeout(5, TimeUnit.SECONDS);
-
-        return builder.build();
+        return builder
+            .connectTimeout(5, TimeUnit.MINUTES)
+            .readTimeout(5, TimeUnit.MINUTES)
+            .build();
     }
 
     @NonNull
-    Retrofit getRetrofit(Gson gson, OkHttpClient okHttpClient) {
+    private Retrofit getRetrofit(Gson gson, OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
-                .baseUrl(API_ENDPOINT)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(okHttpClient)
-                .build();
+            .baseUrl(API_ENDPOINT)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(okHttpClient)
+            .build();
     }
 
-    static ServerInterface getServerInterface(Retrofit retrofit) {
+    private ServerInterface getServerInterface(Retrofit retrofit) {
         return retrofit.create(ServerInterface.class);
     }
 }

@@ -4,8 +4,11 @@ package uk.co.botondbutuza.currency.data.model;
  * Created by brotond on 27/09/2017.
  */
 
+import java.util.Map;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -24,11 +27,12 @@ import io.realm.annotations.PrimaryKey;
  *
  */
 public class CurrencyResponse extends RealmObject {
-
-    @PrimaryKey
-    private String date;
+    private @PrimaryKey String date;
     private String base;
-    private RealmList<CurrencyRate> rates;
+    private RealmList<CurrencyRate> currencyRates;
+
+    @Ignore private Map<String, Float> rates;
+
 
     public String getDate() {
         return date;
@@ -46,11 +50,19 @@ public class CurrencyResponse extends RealmObject {
         this.base = base;
     }
 
-    public RealmList<CurrencyRate> getRates() {
+    public RealmList<CurrencyRate> getCurrencyRates() {
+        return currencyRates;
+    }
+
+    public void setCurrencyRates(RealmList<CurrencyRate> currencyRates) {
+        this.currencyRates = currencyRates;
+    }
+
+    public Map<String, Float> getRates() {
         return rates;
     }
 
-    public void setRates(RealmList<CurrencyRate> rates) {
+    public void setRates(Map<String, Float> rates) {
         this.rates = rates;
     }
 }

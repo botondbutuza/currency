@@ -12,5 +12,12 @@ public interface MainContract {
 
     interface Presenter {
 
+        /**
+         *
+         * @param year
+         * @param month
+         * @param day
+         */
+        void requestCurrencyFor(int year, int month, int day);
     }
 }

@@ -13,4 +13,7 @@ public interface ServerInterface {
 
     @GET("{date}")
     Single<CurrencyResponse> currencyForDate(@Path("date") String date);
+
+    @GET("latest")
+    Single<CurrencyResponse> latest();
 }
