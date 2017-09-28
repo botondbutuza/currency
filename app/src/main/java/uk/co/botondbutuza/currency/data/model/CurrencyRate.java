@@ -6,8 +6,11 @@ package uk.co.botondbutuza.currency.data.model;
 
 import io.realm.RealmObject;
 
-class CurrencyRate extends RealmObject {
+public class CurrencyRate extends RealmObject {
     private String currency, date;
+
+    public CurrencyRate() {
+    }
 
     public String getCurrency() {
         return currency;
