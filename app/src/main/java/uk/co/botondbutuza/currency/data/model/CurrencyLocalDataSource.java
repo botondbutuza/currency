@@ -23,9 +23,7 @@ public class CurrencyLocalDataSource implements DataSource {
     @Override
     public Maybe<CurrencyResponse> getCurrency(String date) {
         CurrencyResponse currency = realm.where(CurrencyResponse.class).equalTo("date", date).findFirst();
-        Log.e("LOCAL", "date="+date+", currency="+currency);
-        if (currency == null) return Maybe.empty();
-        else return Maybe.just(realm.copyFromRealm(currency));
+        return currency == null ? Maybe.empty() : Maybe.just(realm.copyFromRealm(currency));
     }
 
     @Override

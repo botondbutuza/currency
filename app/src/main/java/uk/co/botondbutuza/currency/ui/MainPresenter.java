@@ -27,18 +27,8 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void requestCurrencyFor(int year, int month, int day) {
         subscriptions.add(repository.getFor(year, month, day).subscribe(
-            new Consumer<CurrencyResponse>() {
-                @Override
-                public void accept(CurrencyResponse currencyResponse) throws Exception {
-                    Log.e("SUCCESS", "response="+currencyResponse);
-                }
-            }, new Consumer<Throwable>() {
-                @Override
-                public void accept(Throwable throwable) throws Exception {
-                    Log.e("ERROR", "throwable="+throwable);
-                    throwable.printStackTrace();
-                }
-            }
+            currencyResponse -> Log.e("SUCCESS", "response="+currencyResponse),
+            throwable -> Log.e("ERROR", "throwable="+throwable)
         ));
     }
 }

@@ -36,14 +36,7 @@ public class CurrencyRepository implements DataSource {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .switchIfEmpty(remoteDataSource.getCurrency(date)
-                .doAfterSuccess(new Consumer<CurrencyResponse>() {
-                    @Override
-                    public void accept(CurrencyResponse currencyResponse) throws Exception {
-                        Log.e("REPO", "adding currency to local");
-                        localDataSource.addCurrency(currencyResponse);
-                    }
-                })
-            )
+                .doAfterSuccess(currencyResponse -> localDataSource.addCurrency(currencyResponse)))
             .toSingle();
     }
 

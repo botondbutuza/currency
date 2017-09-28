@@ -39,12 +39,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @OnClick(R.id.date)
     protected void onSelectDate() {
-        new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                presenter.requestCurrencyFor(year, month + 1, day);
-            }
-        }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+        new DatePickerDialog(this, (datePicker, year, month, day) -> presenter.requestCurrencyFor(year, month + 1, day), Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
             .show();
 
     }
