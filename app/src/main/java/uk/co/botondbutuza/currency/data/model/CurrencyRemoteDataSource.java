@@ -1,6 +1,9 @@
 package uk.co.botondbutuza.currency.data.model;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
+
+import java.util.List;
 
 import io.reactivex.Maybe;
 import io.reactivex.Single;
@@ -24,6 +27,7 @@ public class CurrencyRemoteDataSource implements DataSource {
 
     @Override
     public Maybe<CurrencyResponse> getCurrency(String date) {
+        Log.e("RemoteDataSource", "get currency, date="+date);
         return serverInterface
                 .currencyForDate(date)
                 .subscribeOn(Schedulers.io())
@@ -33,6 +37,11 @@ public class CurrencyRemoteDataSource implements DataSource {
 
     @Override
     public Single<CurrencyResponse> getFor(int year, int month, int day) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Single<List<CurrencyResponse>> getBetween(String from, String to) {
         throw new UnsupportedOperationException();
     }
 

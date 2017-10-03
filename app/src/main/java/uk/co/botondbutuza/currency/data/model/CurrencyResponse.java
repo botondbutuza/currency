@@ -65,4 +65,13 @@ public class CurrencyResponse extends RealmObject {
     public void setRates(Map<String, Float> rates) {
         this.rates = rates;
     }
+
+    @Override
+    public String toString() {
+        return "CurrencyResponse{" +
+                "date='" + date + '\'' +
+                ", base='" + base + '\'' +
+                ", currencyRates=" + currencyRates +
+                '}';
+    }
 }

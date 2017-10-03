@@ -27,6 +27,7 @@ public class LocalDataSourceModule {
     @Provides @NonNull @Singleton
     Realm provideRealm(RealmConfiguration config) {
         Realm.setDefaultConfiguration(config);
+        Realm.deleteRealm(config);
 
         try {
             return Realm.getDefaultInstance();

@@ -3,6 +3,8 @@ package uk.co.botondbutuza.currency.data.model;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import java.util.List;
+
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.realm.Realm;
@@ -23,6 +25,8 @@ public class CurrencyLocalDataSource implements DataSource {
     @Override
     public Maybe<CurrencyResponse> getCurrency(String date) {
         CurrencyResponse currency = realm.where(CurrencyResponse.class).equalTo("date", date).findFirst();
+        log("get currency, date="+date+", currency="+currency);
+
         return currency == null ? Maybe.empty() : Maybe.just(realm.copyFromRealm(currency));
     }
 
@@ -32,11 +36,22 @@ public class CurrencyLocalDataSource implements DataSource {
     }
 
     @Override
+    public Single<List<CurrencyResponse>> getBetween(String from, String to) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public Single<CurrencyResponse> addCurrency(CurrencyResponse currencyResponse) {
+        log("add currency, currency="+currencyResponse);
+
         realm.beginTransaction();
         realm.insertOrUpdate(currencyResponse);
         realm.commitTransaction();
 
         return Single.just(currencyResponse);
+    }
+
+    private void log(String msg) {
+        Log.e("LocalDataSource", msg);
     }
 }

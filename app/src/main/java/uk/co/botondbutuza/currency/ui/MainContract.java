@@ -38,5 +38,12 @@ public interface MainContract {
          * @param day
          */
         void requestCurrencyFor(int year, int month, int day);
+
+        /**
+         *
+         * @param from
+         * @param to
+         */
+        void requestDataBetween(String from, String to);
     }
 }

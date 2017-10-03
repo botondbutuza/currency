@@ -8,15 +8,51 @@
     tools:context="uk.co.botondbutuza.currency.ui.MainActivity">
 
     <Button
-        android:id="@+id/date"
-        android:layout_width="match_parent"
+        android:id="@+id/date_from"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Select date"
-        currencyApp:layout_constraintEnd_toEndOf="parent"
+        android:text="Date from"
+        currencyApp:layout_constraintEnd_toStartOf="@+id/date_to"
+        currencyApp:layout_constraintHorizontal_chainStyle="spread_inside"
         currencyApp:layout_constraintStart_toStartOf="parent"
         currencyApp:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/date_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Date to"
+        currencyApp:layout_constraintEnd_toStartOf="@+id/request_chart"
+        currencyApp:layout_constraintStart_toEndOf="@+id/date_from"
+        currencyApp:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/request_chart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Chart"
+        currencyApp:layout_constraintEnd_toEndOf="parent"
+        currencyApp:layout_constraintStart_toEndOf="@+id/date_to"
+        currencyApp:layout_constraintTop_toTopOf="parent" />
+
+    <com.robinhood.spark.SparkView
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        currencyApp:layout_constraintEnd_toEndOf="parent"
+        currencyApp:layout_constraintStart_toStartOf="parent"
+        currencyApp:layout_constraintTop_toBottomOf="@+id/date_from" />
 
 </android.support.constraint.ConstraintLayout>

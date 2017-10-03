@@ -1,7 +1,10 @@
 package uk.co.botondbutuza.currency.ui;
 
+import android.util.Log;
+
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import uk.co.botondbutuza.currency.data.repository.CurrencyRepository;
 
@@ -26,6 +29,26 @@ public class MainPresenter implements MainContract.Presenter {
             repository.getFor(year, month, day).subscribe(
                 view::onCurrencyLoaded,
                 view::onError
+            )
+        );
+    }
+
+    @Override
+    public void requestDataBetween(String from, String to) {
+        from = "2017-09-01";
+        to = "2017-09-08";
+
+        subscriptions.add(
+            repository.getBetween(from, to).subscribe(
+                currencyResponses -> {
+                    Log.e("PRESENTER", "success, responses=" + currencyResponses);
+                    for (int i = 0; i < currencyResponses.size(); i ++) {
+                        Log.e("PRESENTER", "i="+i+", response="+currencyResponses.get(i).getDate());
+                    }
+                },
+                throwable -> {
+                    Log.e("PRESENTER", "error, throwable="+throwable.getMessage());
+                }
             )
         );
     }
