@@ -1,4 +1,4 @@
-package uk.co.botondbutuza.currency.ui;
+package uk.co.botondbutuza.currency.ui.main;
 
 import com.robinhood.spark.SparkAdapter;
 

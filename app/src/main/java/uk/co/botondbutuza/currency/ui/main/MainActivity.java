@@ -1,11 +1,13 @@
-package uk.co.botondbutuza.currency.ui;
+package uk.co.botondbutuza.currency.ui.main;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,6 +29,8 @@ import uk.co.botondbutuza.currency.R;
 import uk.co.botondbutuza.currency.CurrencyApp;
 import uk.co.botondbutuza.currency.data.model.CurrencyRate;
 import uk.co.botondbutuza.currency.data.model.CurrencyResponse;
+import uk.co.botondbutuza.currency.ui.main.DaggerMainComponent;
+import uk.co.botondbutuza.currency.ui.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
     @BindView(R.id.selector)   Spinner selector;
@@ -63,6 +67,22 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         unbinder.unbind();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_settings:
+                SettingsActivity.launch(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     // OnClick listeners.
 

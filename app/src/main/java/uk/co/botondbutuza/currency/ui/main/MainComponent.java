@@ -1,4 +1,4 @@
-package uk.co.botondbutuza.currency.ui;
+package uk.co.botondbutuza.currency.ui.main;
 
 import dagger.Component;
 import uk.co.botondbutuza.currency.dagger.component.RepositoryComponent;
