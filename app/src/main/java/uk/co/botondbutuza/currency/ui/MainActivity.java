@@ -7,20 +7,31 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
+import com.robinhood.spark.SparkView;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import uk.co.botondbutuza.currency.CurrencyApp;
 import uk.co.botondbutuza.currency.R;
+import uk.co.botondbutuza.currency.CurrencyApp;
+import uk.co.botondbutuza.currency.data.model.CurrencyRate;
 import uk.co.botondbutuza.currency.data.model.CurrencyResponse;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
+    @BindView(R.id.selector)   Spinner selector;
+    @BindView(R.id.chart)               SparkView chart;
+
     @Inject MainPresenter presenter;
     @Inject MainAdapter adapter;
 
@@ -34,6 +45,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         setContentView(R.layout.activity_main);
         unbinder = ButterKnife.bind(this);
         injectDagger();
+
+        chart.setAnimateChanges(true);
+        chart.setAdapter(adapter);
+        chart.setLineColor(getResources().getColor(R.color.colorAccent));
 
         year = Calendar.getInstance().get(Calendar.YEAR);
         month = Calendar.getInstance().get(Calendar.MONTH);
@@ -80,7 +95,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void onCurrencyLoaded(List<CurrencyResponse> currencyResponses) {
-        Log.e("MainActivity", "response="+currencyResponses);
+        List<String> currencies = getCurrencyList(currencyResponses.get(0));
+        adapter.setItems(currencyResponses);
+
+        selector.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, currencies));
+        selector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override public void onNothingSelected(AdapterView<?> adapterView) {}
+            @Override public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                adapter.setCurrencyToDisplay(currencies.get(i));
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -93,8 +118,21 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         onError(throwable.getMessage());
     }
 
+    @Override
+    public void onLoading() {
+
+    }
+
 
     // Private.
+
+    private List<String> getCurrencyList(CurrencyResponse response) {
+        List<String> currencies = new ArrayList<>(response.getCurrencyRates().size());
+        for (CurrencyRate rate : response.getCurrencyRates()) {
+            currencies.add(rate.getCurrency());
+        }
+        return currencies;
+    }
 
     private void snack(String msg) {
         Snackbar.make(findViewById(android.R.id.content), msg, BaseTransientBottomBar.LENGTH_INDEFINITE).show();

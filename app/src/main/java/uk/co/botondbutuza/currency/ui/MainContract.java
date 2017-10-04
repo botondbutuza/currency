@@ -14,18 +14,6 @@ public interface MainContract {
 
         /**
          *
-         * @param currencyResponse
-         */
-        void onCurrencyLoaded(CurrencyResponse currencyResponse);
-
-        /**
-         *
-         * @param currencyResponses
-         */
-        void onCurrencyLoaded(List<CurrencyResponse> currencyResponses);
-
-        /**
-         *
          * @param message
          */
         void onError(String message);
@@ -35,6 +23,23 @@ public interface MainContract {
          * @param throwable
          */
         void onError(Throwable throwable);
+
+        /**
+         *
+         */
+        void onLoading();
+
+        /**
+         *
+         * @param currencyResponse
+         */
+        void onCurrencyLoaded(CurrencyResponse currencyResponse);
+
+        /**
+         *
+         * @param currencyResponses
+         */
+        void onCurrencyLoaded(List<CurrencyResponse> currencyResponses);
     }
 
     interface Presenter {
