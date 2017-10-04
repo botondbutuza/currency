@@ -4,14 +4,8 @@ package uk.co.botondbutuza.currency.data.model;
  * Created by brotond on 27/09/2017.
  */
 
-import android.util.Log;
-
 import java.util.Map;
 
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.functions.Function;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;

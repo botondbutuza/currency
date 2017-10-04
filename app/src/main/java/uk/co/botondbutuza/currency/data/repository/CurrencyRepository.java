@@ -5,20 +5,15 @@ import android.util.Log;
 
 import org.joda.time.LocalDate;
 
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.Maybe;
-import io.reactivex.MaybeObserver;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import uk.co.botondbutuza.currency.dagger.scope.Local;
 import uk.co.botondbutuza.currency.dagger.scope.Remote;
