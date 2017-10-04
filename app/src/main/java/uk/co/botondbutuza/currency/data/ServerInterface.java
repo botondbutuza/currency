@@ -11,7 +11,7 @@ import uk.co.botondbutuza.currency.data.model.CurrencyResponse;
 
 public interface ServerInterface {
 
-    @GET("{date}")
+    @GET("{date}?base=GBP")
     Single<CurrencyResponse> currencyForDate(@Path("date") String date);
 
     @GET("latest")
