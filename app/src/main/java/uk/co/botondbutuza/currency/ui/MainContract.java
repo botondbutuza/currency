@@ -1,5 +1,7 @@
 package uk.co.botondbutuza.currency.ui;
 
+import java.util.List;
+
 import uk.co.botondbutuza.currency.data.model.CurrencyResponse;
 
 /**
@@ -18,6 +20,12 @@ public interface MainContract {
 
         /**
          *
+         * @param currencyResponses
+         */
+        void onCurrencyLoaded(List<CurrencyResponse> currencyResponses);
+
+        /**
+         *
          * @param message
          */
         void onError(String message);
@@ -30,6 +38,8 @@ public interface MainContract {
     }
 
     interface Presenter {
+
+        void onDestroy();
 
         /**
          *

@@ -41,14 +41,12 @@ public class CurrencyLocalDataSource implements DataSource {
     }
 
     @Override
-    public Single<CurrencyResponse> addCurrency(CurrencyResponse currencyResponse) {
+    public void addCurrency(CurrencyResponse currencyResponse) {
         log("add currency, currency="+currencyResponse);
 
         realm.beginTransaction();
         realm.insertOrUpdate(currencyResponse);
         realm.commitTransaction();
-
-        return Single.just(currencyResponse);
     }
 
     private void log(String msg) {

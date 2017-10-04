@@ -30,16 +30,15 @@ public interface DataSource {
 
     /**
      *
-     * @param currencyResponse
-     * @return
-     */
-    Single<CurrencyResponse> addCurrency(CurrencyResponse currencyResponse);
-
-    /**
-     *
      * @param from
      * @param to
      * @return
      */
     Single<List<CurrencyResponse>> getBetween(String from, String to);
+
+    /**
+     *
+     * @param currencyResponse
+     */
+    void addCurrency(CurrencyResponse currencyResponse);
 }

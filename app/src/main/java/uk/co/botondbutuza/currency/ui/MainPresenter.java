@@ -1,10 +1,7 @@
 package uk.co.botondbutuza.currency.ui;
 
-import android.util.Log;
-
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import uk.co.botondbutuza.currency.data.repository.CurrencyRepository;
 
@@ -24,6 +21,11 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
+    public void onDestroy() {
+        subscriptions.clear();
+    }
+
+    @Override
     public void requestCurrencyFor(int year, int month, int day) {
         subscriptions.add(
             repository.getFor(year, month, day).subscribe(
@@ -40,15 +42,8 @@ public class MainPresenter implements MainContract.Presenter {
 
         subscriptions.add(
             repository.getBetween(from, to).subscribe(
-                currencyResponses -> {
-                    Log.e("PRESENTER", "success, responses=" + currencyResponses);
-                    for (int i = 0; i < currencyResponses.size(); i ++) {
-                        Log.e("PRESENTER", "i="+i+", response="+currencyResponses.get(i).getDate());
-                    }
-                },
-                throwable -> {
-                    Log.e("PRESENTER", "error, throwable="+throwable.getMessage());
-                }
+                view::onCurrencyLoaded,
+                view::onError
             )
         );
     }

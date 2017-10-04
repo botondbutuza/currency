@@ -7,16 +7,22 @@ package uk.co.botondbutuza.currency.data.model;
 import io.realm.RealmObject;
 
 public class CurrencyRate extends RealmObject {
-    private String currency, date;
+    private String date;
+    private float currency;
 
     public CurrencyRate() {
     }
 
-    public String getCurrency() {
+    public CurrencyRate(String date, float currency) {
+        this.date = date;
+        this.currency = currency;
+    }
+
+    public float getCurrency() {
         return currency;
     }
 
-    public void setCurrency(String currency) {
+    public void setCurrency(float currency) {
         this.currency = currency;
     }
 

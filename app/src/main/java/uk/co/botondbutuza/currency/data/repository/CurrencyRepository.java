@@ -62,8 +62,8 @@ public class CurrencyRepository implements DataSource {
 
 
     @Override
-    public Single<CurrencyResponse> addCurrency(CurrencyResponse currencyResponse) {
-        throw new UnsupportedOperationException();
+    public void addCurrency(CurrencyResponse currencyResponse) {
+        localDataSource.addCurrency(currencyResponse);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class CurrencyRepository implements DataSource {
             .merge(
                 localDataSource.getCurrency(date),
                 remoteDataSource.getCurrency(date)
-                    .doOnSuccess(currencyResponse -> localDataSource.addCurrency(currencyResponse)))
+                    .doOnSuccess(this::addCurrency))
             .firstElement();
     }
 

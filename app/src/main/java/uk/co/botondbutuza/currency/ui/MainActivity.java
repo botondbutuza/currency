@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -22,6 +23,7 @@ import uk.co.botondbutuza.currency.data.model.CurrencyResponse;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
     @Inject MainPresenter presenter;
+    @Inject MainAdapter adapter;
 
     private Unbinder unbinder;
     private String dateFrom, dateTo;
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        presenter.onDestroy();
         unbinder.unbind();
     }
 
@@ -76,6 +80,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void onCurrencyLoaded(List<CurrencyResponse> currencyResponses) {
+        Log.e("MainActivity", "response="+currencyResponses);
+    }
+
+    @Override
     public void onError(String message) {
         snack(message);
     }
@@ -89,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     // Private.
 
     private void snack(String msg) {
-        Snackbar.make(findViewById(android.R.id.content), msg, BaseTransientBottomBar.LENGTH_LONG).show();
+        Snackbar.make(findViewById(android.R.id.content), msg, BaseTransientBottomBar.LENGTH_INDEFINITE).show();
     }
 
     private String getDateString(int year, int month, int day) {

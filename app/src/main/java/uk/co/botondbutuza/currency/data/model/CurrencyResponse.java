@@ -4,8 +4,14 @@ package uk.co.botondbutuza.currency.data.model;
  * Created by brotond on 27/09/2017.
  */
 
+import android.util.Log;
+
 import java.util.Map;
 
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
@@ -27,10 +33,9 @@ import io.realm.annotations.PrimaryKey;
  *
  */
 public class CurrencyResponse extends RealmObject {
-    private @PrimaryKey String date;
+    @PrimaryKey private String date;
     private String base;
-    private RealmList<CurrencyRate> currencyRates;
-
+    private RealmList<CurrencyRate> currencyRates = new RealmList<>();
     @Ignore private Map<String, Float> rates;
 
 
@@ -64,6 +69,10 @@ public class CurrencyResponse extends RealmObject {
 
     public void setRates(Map<String, Float> rates) {
         this.rates = rates;
+    }
+
+    public void addRate(CurrencyRate rate) {
+        currencyRates.add(rate);
     }
 
     @Override

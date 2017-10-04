@@ -6,6 +6,7 @@ import android.util.Log;
 import java.util.List;
 
 import io.reactivex.Maybe;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -29,10 +30,13 @@ public class CurrencyRemoteDataSource implements DataSource {
     public Maybe<CurrencyResponse> getCurrency(String date) {
         Log.e("RemoteDataSource", "get currency, date="+date);
         return serverInterface
-                .currencyForDate(date)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .toMaybe();
+            .currencyForDate(date)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSuccess(currencyResponse -> Observable
+                .fromIterable(currencyResponse.getRates().keySet())
+                .forEach(currency -> currencyResponse.addRate(new CurrencyRate(currency, currencyResponse.getRates().get(currency)))))
+            .toMaybe();
     }
 
     @Override
@@ -46,7 +50,7 @@ public class CurrencyRemoteDataSource implements DataSource {
     }
 
     @Override
-    public Single<CurrencyResponse> addCurrency(CurrencyResponse currencyResponse) {
+    public void addCurrency(CurrencyResponse currencyResponse) {
         throw new UnsupportedOperationException();
     }
 }
