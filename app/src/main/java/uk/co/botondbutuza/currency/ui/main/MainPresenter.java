@@ -21,19 +21,10 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void onDestroy() {
+    public void unsubscribe() {
         subscriptions.clear();
     }
 
-    @Override
-    public void requestCurrencyList(int year, int month, int day) {
-        subscriptions.add(
-            repository.getLatest().subscribe(
-                view::onCurrencyLoaded,
-                view::onError
-            )
-        );
-    }
 
     @Override
     public void requestDataBetween(String from, String to) {

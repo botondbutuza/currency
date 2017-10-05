@@ -31,17 +31,17 @@ import uk.co.botondbutuza.currency.R;
 import uk.co.botondbutuza.currency.CurrencyApp;
 import uk.co.botondbutuza.currency.data.model.CurrencyRate;
 import uk.co.botondbutuza.currency.data.model.CurrencyResponse;
+import uk.co.botondbutuza.currency.ui.base.BaseActivity;
 import uk.co.botondbutuza.currency.ui.main.DaggerMainComponent;
 import uk.co.botondbutuza.currency.ui.settings.SettingsActivity;
 
-public class MainActivity extends AppCompatActivity implements MainContract.View {
+public class MainActivity extends BaseActivity implements MainContract.View {
     @BindView(R.id.selector)   Spinner selector;
     @BindView(R.id.chart)      SparkView chart;
 
     @Inject MainPresenter presenter;
     @Inject MainAdapter adapter;
 
-    private Unbinder unbinder;
     private String dateFrom, dateTo;
     private int year, month, day;
 
@@ -52,28 +52,39 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
 
+    // BaseActivity implementation.
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        unbinder = ButterKnife.bind(this);
-        injectDagger();
+    protected int getLayoutResId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initViews() {
+        year = Calendar.getInstance().get(Calendar.YEAR);
+        month = Calendar.getInstance().get(Calendar.MONTH);
+        day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
         chart.setAnimateChanges(true);
         chart.setAdapter(adapter);
         chart.setLineColor(getResources().getColor(R.color.colorAccent));
-
-        year = Calendar.getInstance().get(Calendar.YEAR);
-        month = Calendar.getInstance().get(Calendar.MONTH);
-        day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
     }
+
+    @Override
+    protected void injectDagger() {
+        DaggerMainComponent.builder()
+                .repositoryComponent(getApp().getRepositoryComponent())
+                .mainModule(new MainModule(this))
+                .build().inject(this);
+    }
+
+
+    // Lifecycle.
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        presenter.onDestroy();
-        unbinder.unbind();
+        presenter.unsubscribe();
     }
 
     @Override
@@ -92,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
     // OnClick listeners.
 
@@ -115,7 +127,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }, year, month, day).show();
     }
 
+
     // MainContract.View implementation.
+
+    @Override
+    public void onLoading() {
+
+    }
 
     @Override
     public void onCurrencyLoaded(CurrencyResponse currencyResponse) {
@@ -137,21 +155,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         });
     }
 
-    @Override
-    public void onError(String message) {
-        snack(message);
-    }
-
-    @Override
-    public void onError(Throwable throwable) {
-        onError(throwable.getMessage());
-    }
-
-    @Override
-    public void onLoading() {
-
-    }
-
 
     // Private.
 
@@ -163,22 +166,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         return currencies;
     }
 
-    private void snack(String msg) {
-        Snackbar.make(findViewById(android.R.id.content), msg, BaseTransientBottomBar.LENGTH_INDEFINITE).show();
-    }
-
     private String getDateString(int year, int month, int day) {
         return year + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;
-    }
-
-    private void injectDagger() {
-        DaggerMainComponent.builder()
-                .repositoryComponent(getApp().getRepositoryComponent())
-                .mainModule(new MainModule(this))
-                .build().inject(this);
-    }
-
-    private CurrencyApp getApp() {
-        return (CurrencyApp) getApplication();
     }
 }

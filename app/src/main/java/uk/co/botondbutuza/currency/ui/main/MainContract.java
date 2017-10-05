@@ -3,6 +3,7 @@ package uk.co.botondbutuza.currency.ui.main;
 import java.util.List;
 
 import uk.co.botondbutuza.currency.data.model.CurrencyResponse;
+import uk.co.botondbutuza.currency.ui.base.BaseContract;
 
 /**
  * Created by brotond on 27/09/2017.
@@ -10,24 +11,7 @@ import uk.co.botondbutuza.currency.data.model.CurrencyResponse;
 
 public interface MainContract {
 
-    interface View {
-
-        /**
-         *
-         * @param message
-         */
-        void onError(String message);
-
-        /**
-         *
-         * @param throwable
-         */
-        void onError(Throwable throwable);
-
-        /**
-         *
-         */
-        void onLoading();
+    interface View extends BaseContract.View {
 
         /**
          *
@@ -42,17 +26,7 @@ public interface MainContract {
         void onCurrencyLoaded(List<CurrencyResponse> currencyResponses);
     }
 
-    interface Presenter {
-
-        void onDestroy();
-
-        /**
-         *
-         * @param year
-         * @param month
-         * @param day
-         */
-        void requestCurrencyList(int year, int month, int day);
+    interface Presenter extends BaseContract.Presenter {
 
         /**
          *
