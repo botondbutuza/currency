@@ -1,3 +1,13 @@
-This is a thing.
+#Android playground
 
-There are many things like it. But this is mine.
+A project where I can play around with new and cool stuff. Said stuff includes:
+
+- MVP
+- RxJava2
+- Dagger2
+- Realm
+- ConstraintLayout
+- Butterknife, Retrofit, Support libraries
+- Clean Architecture
+- Repository Pattern
+- Offline First
