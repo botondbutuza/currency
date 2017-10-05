@@ -11,7 +11,7 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import uk.co.botondbutuza.currency.dagger.scope.Local;
 import uk.co.botondbutuza.currency.data.DataSource;
-import uk.co.botondbutuza.currency.data.model.CurrencyLocalDataSource;
+import uk.co.botondbutuza.currency.data.repository.CurrencyLocalDataSource;
 
 /**
  * Created by brotond on 27/09/2017.

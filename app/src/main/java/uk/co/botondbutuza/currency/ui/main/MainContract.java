@@ -52,7 +52,7 @@ public interface MainContract {
          * @param month
          * @param day
          */
-        void requestCurrencyFor(int year, int month, int day);
+        void requestCurrencyList(int year, int month, int day);
 
         /**
          *

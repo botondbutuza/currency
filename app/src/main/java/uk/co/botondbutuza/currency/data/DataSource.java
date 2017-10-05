@@ -14,12 +14,9 @@ public interface DataSource {
 
     /**
      *
-     * @param year
-     * @param month
-     * @param day
      * @return
      */
-    Single<CurrencyResponse> getFor(int year, int month, int day);
+    Maybe<CurrencyResponse> getLatest();
 
     /**
      *

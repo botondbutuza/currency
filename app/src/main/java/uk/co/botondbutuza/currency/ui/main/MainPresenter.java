@@ -26,9 +26,9 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void requestCurrencyFor(int year, int month, int day) {
+    public void requestCurrencyList(int year, int month, int day) {
         subscriptions.add(
-            repository.getFor(year, month, day).subscribe(
+            repository.getLatest().subscribe(
                 view::onCurrencyLoaded,
                 view::onError
             )

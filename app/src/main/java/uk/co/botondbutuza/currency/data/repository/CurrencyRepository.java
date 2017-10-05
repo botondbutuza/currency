@@ -34,23 +34,20 @@ public class CurrencyRepository implements DataSource {
     }
 
     @Override
-    public Single<CurrencyResponse> getFor(int year, int month, int day) {
-        String date = year + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;
-        log("get for, date="+date);
-
-        return getCurrency(date).toSingle();
+    public Maybe<CurrencyResponse> getLatest() {
+        return Maybe
+            .merge(
+                localDataSource.getLatest(),
+                remoteDataSource.getLatest().doOnSuccess(this::addCurrency))
+            .firstElement();
     }
-
 
     @Override
     public Single<List<CurrencyResponse>> getBetween(String from, String to) {
         return Observable.fromIterable(getDates(from, to))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMap(date -> {
-                    log("get between, flatmapped, date="+date);
-                    return getCurrency(date).toObservable();
-                })
+                .flatMap(date -> getCurrency(date).toObservable())
                 .distinct(CurrencyResponse::getDate)
                 .toSortedList((left, right) -> left.getDate().compareTo(right.getDate()));
     }

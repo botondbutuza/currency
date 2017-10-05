@@ -20,7 +20,7 @@ import uk.co.botondbutuza.currency.BuildConfig;
 import uk.co.botondbutuza.currency.dagger.scope.Remote;
 import uk.co.botondbutuza.currency.data.DataSource;
 import uk.co.botondbutuza.currency.data.ServerInterface;
-import uk.co.botondbutuza.currency.data.model.CurrencyRemoteDataSource;
+import uk.co.botondbutuza.currency.data.repository.CurrencyRemoteDataSource;
 
 /**
  * Created by brotond on 27/09/2017.

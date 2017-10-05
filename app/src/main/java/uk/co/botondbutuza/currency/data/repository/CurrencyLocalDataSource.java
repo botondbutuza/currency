@@ -1,4 +1,4 @@
-package uk.co.botondbutuza.currency.data.model;
+package uk.co.botondbutuza.currency.data.repository;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -9,6 +9,7 @@ import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.realm.Realm;
 import uk.co.botondbutuza.currency.data.DataSource;
+import uk.co.botondbutuza.currency.data.model.CurrencyResponse;
 
 /**
  * Created by brotond on 28/09/2017.
@@ -31,8 +32,9 @@ public class CurrencyLocalDataSource implements DataSource {
     }
 
     @Override
-    public Single<CurrencyResponse> getFor(int year, int month, int day) {
-        throw new UnsupportedOperationException();
+    public Maybe<CurrencyResponse> getLatest() {
+        CurrencyResponse currency = realm.where(CurrencyResponse.class).findAllSorted("date").first();
+        return currency == null ? Maybe.empty() : Maybe.just(realm.copyFromRealm(currency));
     }
 
     @Override
