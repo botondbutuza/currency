@@ -3,6 +3,7 @@ package uk.co.botondbutuza.currency.data;
 import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import uk.co.botondbutuza.currency.data.model.CurrencyResponse;
 
 /**
@@ -11,8 +12,8 @@ import uk.co.botondbutuza.currency.data.model.CurrencyResponse;
 
 public interface ServerInterface {
 
-    @GET("{date}?base=GBP")
-    Single<CurrencyResponse> currencyForDate(@Path("date") String date);
+    @GET("{date}")
+    Single<CurrencyResponse> currencyForDate(@Path("date") String date, @Query("base") String base);
 
     @GET("latest")
     Single<CurrencyResponse> latest();

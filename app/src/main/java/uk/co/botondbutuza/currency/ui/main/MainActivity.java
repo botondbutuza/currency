@@ -3,12 +3,7 @@ package uk.co.botondbutuza.currency.ui.main;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.design.widget.BaseTransientBottomBar;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,20 +19,17 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import uk.co.botondbutuza.currency.R;
-import uk.co.botondbutuza.currency.CurrencyApp;
 import uk.co.botondbutuza.currency.data.model.CurrencyRate;
 import uk.co.botondbutuza.currency.data.model.CurrencyResponse;
 import uk.co.botondbutuza.currency.ui.base.BaseActivity;
-import uk.co.botondbutuza.currency.ui.main.DaggerMainComponent;
 import uk.co.botondbutuza.currency.ui.settings.SettingsActivity;
 
 public class MainActivity extends BaseActivity implements MainContract.View {
-    @BindView(R.id.selector)   Spinner selector;
-    @BindView(R.id.chart)      SparkView chart;
+    @BindView(R.id.currencies)  Spinner currencies;
+    @BindView(R.id.selector)    Spinner selector;
+    @BindView(R.id.chart)       SparkView chart;
 
     @Inject MainPresenter presenter;
     @Inject MainAdapter adapter;
@@ -61,6 +53,8 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Override
     protected void initViews() {
+        presenter.requestAvailableCurrencies();
+
         year = Calendar.getInstance().get(Calendar.YEAR);
         month = Calendar.getInstance().get(Calendar.MONTH);
         day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
@@ -89,7 +83,8 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        // Not enough options for customisation, really.
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -109,7 +104,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @OnClick(R.id.request_chart)
     protected void onRequestChart() {
-        presenter.requestDataBetween(dateFrom, dateTo);
+        presenter.requestCurrenciesBetween(dateFrom, dateTo, currencies.getSelectedItem().toString());
     }
 
     @OnClick({ R.id.date_from, R.id.date_to })
@@ -136,6 +131,13 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     }
 
     @Override
+    public void onCurrencyListLoaded(CurrencyResponse response) {
+        List<String> list = getCurrencyList(response);
+        currencies.setAdapter(new ArrayAdapter<>(this, R.layout.item_spinner, list));
+        // No need for onItemSelectedListener, as the value will be picked up when charting data is requested.
+    }
+
+    @Override
     public void onCurrencyLoaded(CurrencyResponse currencyResponse) {
         snack(currencyResponse.getDate());
     }
@@ -145,7 +147,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         List<String> currencies = getCurrencyList(currencyResponses.get(0));
         adapter.setItems(currencyResponses);
 
-        selector.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, currencies));
+        selector.setAdapter(new ArrayAdapter<>(this, R.layout.item_spinner, currencies));
         selector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override public void onNothingSelected(AdapterView<?> adapterView) {}
             @Override public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

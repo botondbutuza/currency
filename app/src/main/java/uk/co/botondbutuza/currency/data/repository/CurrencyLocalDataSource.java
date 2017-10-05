@@ -24,10 +24,12 @@ public class CurrencyLocalDataSource implements DataSource {
     }
 
     @Override
-    public Maybe<CurrencyResponse> getCurrency(String date) {
-        CurrencyResponse currency = realm.where(CurrencyResponse.class).equalTo("date", date).findFirst();
+    public Maybe<CurrencyResponse> getCurrency(String date, String base) {
+        CurrencyResponse currency = realm.where(CurrencyResponse.class)
+                .equalTo("date", date)
+                .equalTo("base", base)
+                .findFirst();
         log("get currency, date="+date+", currency="+currency);
-
         return currency == null ? Maybe.empty() : Maybe.just(realm.copyFromRealm(currency));
     }
 
@@ -38,7 +40,7 @@ public class CurrencyLocalDataSource implements DataSource {
     }
 
     @Override
-    public Single<List<CurrencyResponse>> getBetween(String from, String to) {
+    public Single<List<CurrencyResponse>> getBetween(String from, String to, String base) {
         throw new UnsupportedOperationException();
     }
 

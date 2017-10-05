@@ -27,9 +27,9 @@ public class CurrencyRemoteDataSource implements DataSource {
     }
 
     @Override
-    public Maybe<CurrencyResponse> getCurrency(String date) {
+    public Maybe<CurrencyResponse> getCurrency(String date, String base) {
         return serverInterface
-            .currencyForDate(date)
+            .currencyForDate(date, base)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess(currencyResponse -> Observable
@@ -51,7 +51,7 @@ public class CurrencyRemoteDataSource implements DataSource {
     }
 
     @Override
-    public Single<List<CurrencyResponse>> getBetween(String from, String to) {
+    public Single<List<CurrencyResponse>> getBetween(String from, String to, String base) {
         throw new UnsupportedOperationException();
     }
 

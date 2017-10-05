@@ -15,6 +15,12 @@ public interface MainContract {
 
         /**
          *
+         * @param response
+         */
+        void onCurrencyListLoaded(CurrencyResponse response);
+
+        /**
+         *
          * @param currencyResponse
          */
         void onCurrencyLoaded(CurrencyResponse currencyResponse);
@@ -30,9 +36,14 @@ public interface MainContract {
 
         /**
          *
+         */
+        void requestAvailableCurrencies();
+
+        /**
          * @param from
          * @param to
+         * @param baseCurrency
          */
-        void requestDataBetween(String from, String to);
+        void requestCurrenciesBetween(String from, String to, String baseCurrency);
     }
 }

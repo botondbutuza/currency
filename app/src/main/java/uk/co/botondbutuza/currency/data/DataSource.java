@@ -21,17 +21,19 @@ public interface DataSource {
     /**
      *
      * @param date
+     * @param base
      * @return
      */
-    Maybe<CurrencyResponse> getCurrency(String date);
+    Maybe<CurrencyResponse> getCurrency(String date, String base);
 
     /**
      *
      * @param from
      * @param to
+     * @param base
      * @return
      */
-    Single<List<CurrencyResponse>> getBetween(String from, String to);
+    Single<List<CurrencyResponse>> getBetween(String from, String to, String base);
 
     /**
      *

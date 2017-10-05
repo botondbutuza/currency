@@ -43,11 +43,11 @@ public class CurrencyRepository implements DataSource {
     }
 
     @Override
-    public Single<List<CurrencyResponse>> getBetween(String from, String to) {
+    public Single<List<CurrencyResponse>> getBetween(String from, String to, String base) {
         return Observable.fromIterable(getDates(from, to))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMap(date -> getCurrency(date).toObservable())
+                .flatMap(date -> getCurrency(date, base).toObservable())
                 .distinct(CurrencyResponse::getDate)
                 .toSortedList((left, right) -> left.getDate().compareTo(right.getDate()));
     }
@@ -59,11 +59,11 @@ public class CurrencyRepository implements DataSource {
     }
 
     @Override
-    public Maybe<CurrencyResponse> getCurrency(String date) {
+    public Maybe<CurrencyResponse> getCurrency(String date, String base) {
         return Maybe
             .merge(
-                localDataSource.getCurrency(date),
-                remoteDataSource.getCurrency(date)
+                localDataSource.getCurrency(date, base),
+                remoteDataSource.getCurrency(date, base)
                     .doOnSuccess(this::addCurrency))
             .firstElement();
     }
