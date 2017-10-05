@@ -1,6 +1,8 @@
 package uk.co.botondbutuza.currency.ui.main;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
@@ -34,7 +36,7 @@ import uk.co.botondbutuza.currency.ui.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
     @BindView(R.id.selector)   Spinner selector;
-    @BindView(R.id.chart)               SparkView chart;
+    @BindView(R.id.chart)      SparkView chart;
 
     @Inject MainPresenter presenter;
     @Inject MainAdapter adapter;
@@ -42,6 +44,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private Unbinder unbinder;
     private String dateFrom, dateTo;
     private int year, month, day;
+
+
+    public static void launch(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
