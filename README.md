@@ -7,7 +7,7 @@ A project where I can play around with new and cool stuff. Said stuff includes:
 - Dagger2
 - Realm
 - ConstraintLayout
-- Butterknife, Retrofit, Support libraries
+- Butterknife, Retrofit, Support and Design libraries
 - Clean Architecture
 - Repository Pattern
 - Offline First
