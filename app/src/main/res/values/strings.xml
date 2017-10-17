@@ -8,4 +8,6 @@
     <string name="date_to">To</string>
     <string name="chart_action">Chart</string>
     <string name="settings">Settings</string>
+    <string name="no_start_date">Please select a start date.</string>
+    <string name="no_end_date">Please select an end date.</string>
 </resources>

@@ -110,10 +110,10 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     @OnClick(R.id.request_chart)
     protected void onRequestChart() {
         if (dateFrom == null) {
-            snack("Please select a start date.");
+            snack(getString(R.string.no_start_date));
             return;
         } else if (dateTo == null) {
-            snack("Please select an end date.");
+            snack(getString(R.string.no_end_date));
             return;
         }
 
@@ -157,7 +157,12 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         List<String> list = getCurrencyList(response);
         currencies.getEditText().setText(list.get(0));
         currencyDialog = new AlertDialog.Builder(this)
-                .setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list), (dialog, which) -> currencies.getEditText().setText(list.get(which)))
+                .setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list), (dialog, which) -> {
+                    currencies.getEditText().setText(list.get(which));
+                    // hide chart stuff cause we need to re-request
+                    selector.setVisibility(View.GONE);
+                    chart.setVisibility(View.GONE);
+                })
                 .create();
     }
 
@@ -171,6 +176,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         List<String> currencies = getCurrencyList(currencyResponses.get(0));
         adapter.setItems(currencyResponses);
 
+        selector.setVisibility(View.VISIBLE);
         selector.setAdapter(new ArrayAdapter<>(this, R.layout.item_spinner, currencies));
         selector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override public void onNothingSelected(AdapterView<?> adapterView) {}
