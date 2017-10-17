@@ -38,9 +38,6 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void requestCurrenciesBetween(String from, String to, String base) {
-        from = "2017-09-01";
-        to = "2017-09-08";
-
         subscriptions.add(
             repository.getBetween(from, to, base).subscribe(
                 view::onCurrencyLoaded,

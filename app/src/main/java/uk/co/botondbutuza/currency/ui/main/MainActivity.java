@@ -3,17 +3,21 @@ package uk.co.botondbutuza.currency.ui.main;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.robinhood.spark.SparkView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,13 +31,14 @@ import uk.co.botondbutuza.currency.ui.base.BaseActivity;
 import uk.co.botondbutuza.currency.ui.settings.SettingsActivity;
 
 public class MainActivity extends BaseActivity implements MainContract.View {
-    @BindView(R.id.currencies)  Spinner currencies;
+    @BindView(R.id.currencies)  TextInputLayout currencies;
     @BindView(R.id.selector)    Spinner selector;
     @BindView(R.id.chart)       SparkView chart;
 
     @Inject MainPresenter presenter;
     @Inject MainAdapter adapter;
 
+    private AlertDialog currencyDialog;
     private String dateFrom, dateTo;
     private int year, month, day;
 
@@ -104,19 +109,36 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     @OnClick(R.id.request_chart)
     protected void onRequestChart() {
-        presenter.requestCurrenciesBetween(dateFrom, dateTo, currencies.getSelectedItem().toString());
+        if (dateFrom == null) {
+            snack("Please select a start date.");
+            return;
+        } else if (dateTo == null) {
+            snack("Please select an end date.");
+            return;
+        }
+
+        // currency will always have a selected value
+        presenter.requestCurrenciesBetween(dateFrom, dateTo, currencies.getEditText().getText().toString());
     }
 
-    @OnClick({ R.id.date_from, R.id.date_to })
+    @OnClick({ R.id.currencies, R.id.currencies_spinner })
+    protected void onSelectCurrency() {
+        currencyDialog.show();
+    }
+
+    @OnClick({ R.id.date_from, R.id.date_from_text, R.id.date_to, R.id.date_to_text })
     protected void onSelectDate(View view) {
         new DatePickerDialog(this, (datePicker, year, month, day) -> {
-
             switch (view.getId()) {
                 case R.id.date_from:
+                case R.id.date_from_text:
                     dateFrom = getDateString(year, month + 1, day);
+                    ((EditText) view.findViewById(R.id.date_from_text)).setText(dateFrom);
                     break;
                 case R.id.date_to:
+                case R.id.date_to_text:
                     dateTo = getDateString(year, month + 1, day);
+                    ((EditText) view.findViewById(R.id.date_to_text)).setText(dateTo);
                     break;
             }
         }, year, month, day).show();
@@ -133,8 +155,10 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     @Override
     public void onCurrencyListLoaded(CurrencyResponse response) {
         List<String> list = getCurrencyList(response);
-        currencies.setAdapter(new ArrayAdapter<>(this, R.layout.item_spinner, list));
-        // No need for onItemSelectedListener, as the value will be picked up when charting data is requested.
+        currencies.getEditText().setText(list.get(0));
+        currencyDialog = new AlertDialog.Builder(this)
+                .setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list), (dialog, which) -> currencies.getEditText().setText(list.get(which)))
+                .create();
     }
 
     @Override
@@ -162,9 +186,12 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
     private List<String> getCurrencyList(CurrencyResponse response) {
         List<String> currencies = new ArrayList<>(response.getCurrencyRates().size());
+
         for (CurrencyRate rate : response.getCurrencyRates()) {
             currencies.add(rate.getCurrency());
         }
+
+        Collections.sort(currencies, String::compareTo);
         return currencies;
     }
 
