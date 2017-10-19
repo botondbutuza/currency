@@ -2,7 +2,6 @@ package uk.co.botondbutuza.currency.ui.detail;
 
 import dagger.Module;
 import dagger.Provides;
-import uk.co.botondbutuza.currency.dagger.scope.ActivityScope;
 import uk.co.botondbutuza.currency.ui.base.BaseContract;
 
 /**
