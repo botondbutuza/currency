@@ -2,6 +2,7 @@ package uk.co.botondbutuza.currency.ui.main;
 
 import dagger.Module;
 import dagger.Provides;
+import uk.co.botondbutuza.currency.ui.base.BaseContract;
 
 /**
  * Created by brotond on 27/09/2017.
@@ -18,4 +19,9 @@ class MainModule {
 
     @Provides
     MainContract.View provideView() { return view; }
+
+    @Provides
+    BaseContract.CurrencyConsumer provideConsumer() {
+        return view;
+    }
 }

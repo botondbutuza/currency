@@ -37,7 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     // Helper methods.
 
     protected void snack(String msg) {
-        snack(msg, Snackbar.LENGTH_INDEFINITE);
+        snack(msg, Snackbar.LENGTH_LONG);
     }
 
     protected void snack(String msg, int length) {

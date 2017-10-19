@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -28,14 +29,17 @@ import uk.co.botondbutuza.currency.R;
 import uk.co.botondbutuza.currency.data.model.CurrencyRate;
 import uk.co.botondbutuza.currency.data.model.CurrencyResponse;
 import uk.co.botondbutuza.currency.ui.base.BaseActivity;
+import uk.co.botondbutuza.currency.ui.base.CurrencyPresenter;
+import uk.co.botondbutuza.currency.ui.detail.CurrencyDetailActivity;
 import uk.co.botondbutuza.currency.ui.settings.SettingsActivity;
 
 public class MainActivity extends BaseActivity implements MainContract.View {
     @BindView(R.id.currencies)  TextInputLayout currencies;
     @BindView(R.id.selector)    Spinner selector;
     @BindView(R.id.chart)       SparkView chart;
+    @BindView(R.id.open_details)    Button openDetails;
 
-    @Inject MainPresenter presenter;
+    @Inject CurrencyPresenter presenter;
     @Inject MainAdapter adapter;
 
     private AlertDialog currencyDialog;
@@ -118,7 +122,12 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         }
 
         // currency will always have a selected value
-        presenter.requestCurrenciesBetween(dateFrom, dateTo, currencies.getEditText().getText().toString());
+        presenter.requestCurrenciesBetween(dateFrom, dateTo, getBaseCurrency());
+    }
+
+    @OnClick(R.id.open_details)
+    protected void onOpenDetails() {
+        CurrencyDetailActivity.launch(this, getBaseCurrency(), dateFrom, dateTo);
     }
 
     @OnClick({ R.id.currencies, R.id.currencies_spinner })
@@ -162,6 +171,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
                     // hide chart stuff cause we need to re-request
                     selector.setVisibility(View.GONE);
                     chart.setVisibility(View.GONE);
+                    openDetails.setVisibility(View.GONE);
                 })
                 .create();
     }
@@ -176,7 +186,10 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         List<String> currencies = getCurrencyList(currencyResponses.get(0));
         adapter.setItems(currencyResponses);
 
+        chart.setVisibility(View.VISIBLE);
         selector.setVisibility(View.VISIBLE);
+        openDetails.setVisibility(View.VISIBLE);
+
         selector.setAdapter(new ArrayAdapter<>(this, R.layout.item_spinner, currencies));
         selector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override public void onNothingSelected(AdapterView<?> adapterView) {}
@@ -189,6 +202,10 @@ public class MainActivity extends BaseActivity implements MainContract.View {
 
 
     // Private.
+
+    private String getBaseCurrency() {
+        return currencies.getEditText().getText().toString();
+    }
 
     private List<String> getCurrencyList(CurrencyResponse response) {
         List<String> currencies = new ArrayList<>(response.getCurrencyRates().size());

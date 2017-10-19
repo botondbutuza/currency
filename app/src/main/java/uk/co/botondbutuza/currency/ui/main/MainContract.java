@@ -1,7 +1,5 @@
 package uk.co.botondbutuza.currency.ui.main;
 
-import java.util.List;
-
 import uk.co.botondbutuza.currency.data.model.CurrencyResponse;
 import uk.co.botondbutuza.currency.ui.base.BaseContract;
 
@@ -11,39 +9,16 @@ import uk.co.botondbutuza.currency.ui.base.BaseContract;
 
 public interface MainContract {
 
-    interface View extends BaseContract.View {
-
-        /**
-         *
-         * @param response
-         */
-        void onCurrencyListLoaded(CurrencyResponse response);
+    interface View extends BaseContract.CurrencyConsumer {
 
         /**
          *
          * @param currencyResponse
          */
         void onCurrencyLoaded(CurrencyResponse currencyResponse);
-
-        /**
-         *
-         * @param currencyResponses
-         */
-        void onCurrencyLoaded(List<CurrencyResponse> currencyResponses);
     }
 
-    interface Presenter extends BaseContract.Presenter {
+    interface Presenter extends BaseContract.CurrencyPresenter {
 
-        /**
-         *
-         */
-        void requestAvailableCurrencies();
-
-        /**
-         * @param from
-         * @param to
-         * @param baseCurrency
-         */
-        void requestCurrenciesBetween(String from, String to, String baseCurrency);
     }
 }
