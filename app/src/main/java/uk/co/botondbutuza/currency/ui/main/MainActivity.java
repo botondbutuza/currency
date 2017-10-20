@@ -162,12 +162,13 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     }
 
     @Override
-    public void onCurrencyListLoaded(CurrencyResponse response) {
-        List<String> list = getCurrencyList(response);
+    public void onAvailableCurrenciesLoaded(List<String> list) {
         currencies.getEditText().setText(list.get(0));
+
         currencyDialog = new AlertDialog.Builder(this)
                 .setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list), (dialog, which) -> {
                     currencies.getEditText().setText(list.get(which));
+
                     // hide chart stuff cause we need to re-request
                     selector.setVisibility(View.GONE);
                     chart.setVisibility(View.GONE);
@@ -182,7 +183,7 @@ public class MainActivity extends BaseActivity implements MainContract.View {
     }
 
     @Override
-    public void onCurrencyLoaded(List<CurrencyResponse> currencyResponses) {
+    public void onCurrencyListLoaded(List<CurrencyResponse> currencyResponses) {
         List<String> currencies = getCurrencyList(currencyResponses.get(0));
         adapter.setItems(currencyResponses);
 

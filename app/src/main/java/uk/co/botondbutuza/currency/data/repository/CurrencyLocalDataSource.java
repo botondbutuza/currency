@@ -29,7 +29,7 @@ public class CurrencyLocalDataSource implements DataSource {
                 .equalTo("date", date)
                 .equalTo("base", base)
                 .findFirst();
-        log("get currency, date="+date+", currency="+currency);
+        log("getItem currency, date="+date+", currency="+currency);
         return currency == null ? Maybe.empty() : Maybe.just(realm.copyFromRealm(currency));
     }
 

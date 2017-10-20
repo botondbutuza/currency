@@ -27,15 +27,15 @@ public interface BaseContract {
 
         /**
          *
-         * @param response
+         * @param currencies
          */
-        void onCurrencyListLoaded(CurrencyResponse response);
+        void onAvailableCurrenciesLoaded(List<String> currencies);
 
         /**
          *
-         * @param currencyResponses
+         * @param response
          */
-        void onCurrencyLoaded(List<CurrencyResponse> currencyResponses);
+        void onCurrencyListLoaded(List<CurrencyResponse> response);
     }
 
     interface CurrencyPresenter extends Presenter {

@@ -5,9 +5,12 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import uk.co.botondbutuza.currency.CurrencyApp;
+import uk.co.botondbutuza.currency.R;
 
 /**
  * Created by brotond on 05/10/2017.
@@ -19,12 +22,19 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract void initViews();
     protected abstract void injectDagger();
 
+    @Nullable @BindView(R.id.toolbar) Toolbar toolbar;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(getLayoutResId());
         ButterKnife.bind(this);
         injectDagger();
+
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
 
         initViews();
     }

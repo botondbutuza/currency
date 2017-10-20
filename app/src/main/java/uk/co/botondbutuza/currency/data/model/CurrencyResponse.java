@@ -27,7 +27,9 @@ import io.realm.annotations.PrimaryKey;
  *
  */
 public class CurrencyResponse extends RealmObject {
-    @PrimaryKey private String date;
+    @PrimaryKey
+    private String date;
+
     private String base;
     private RealmList<CurrencyRate> currencyRates = new RealmList<>();
     @Ignore private Map<String, Float> rates;
