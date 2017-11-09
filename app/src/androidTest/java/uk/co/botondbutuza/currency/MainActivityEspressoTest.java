@@ -29,6 +29,9 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class MainActivityEspressoTest {
+    private static final String TEST_YEAR = "2017";
+    private static final String TEST_MONTH = "09";
+    private static final String TEST_DAY = "01";
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
@@ -43,9 +46,9 @@ public class MainActivityEspressoTest {
     @Test
     public void selectDateFrom() {
         onView(withId(R.id.date_from)).perform(click());
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2017, 8 + 1, 1));
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(Integer.valueOf(TEST_YEAR), Integer.valueOf(TEST_MONTH), Integer.valueOf(TEST_DAY)));
         onView(withId(android.R.id.button1)).perform(click());
 
-        onView(withId(R.id.date_from_text)).check(matches(withText("2017-09-01")));
+        onView(withId(R.id.date_from_text)).check(matches(withText(TEST_YEAR + "-"+ TEST_MONTH + "-" + TEST_DAY)));
     }
 }
