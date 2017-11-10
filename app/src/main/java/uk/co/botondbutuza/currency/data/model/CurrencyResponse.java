@@ -35,6 +35,13 @@ public class CurrencyResponse extends RealmObject {
     @Ignore private Map<String, Float> rates;
 
 
+    public CurrencyResponse() {
+    }
+
+    public CurrencyResponse(String date) {
+        this.date = date;
+    }
+
     public String getDate() {
         return date;
     }
