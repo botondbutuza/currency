@@ -64,7 +64,10 @@ public class CurrencyRepository implements DataSource {
             .merge(
                 localDataSource.getCurrency(date, base),
                 remoteDataSource.getCurrency(date, base)
-                    .doOnSuccess(this::addCurrency))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSuccess(this::addCurrency)
+            )
             .firstElement();
     }
 

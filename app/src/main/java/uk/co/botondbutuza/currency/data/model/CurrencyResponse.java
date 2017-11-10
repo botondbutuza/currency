@@ -4,6 +4,7 @@ package uk.co.botondbutuza.currency.data.model;
  * Created by brotond on 27/09/2017.
  */
 
+import java.util.HashMap;
 import java.util.Map;
 
 import io.realm.RealmList;
@@ -38,9 +39,12 @@ public class CurrencyResponse extends RealmObject {
     public CurrencyResponse() {
     }
 
-    public CurrencyResponse(String date) {
+    public CurrencyResponse(String date, String base) {
         this.date = date;
+        this.base = base;
+        this.rates = new HashMap<>(0);
     }
+
 
     public String getDate() {
         return date;

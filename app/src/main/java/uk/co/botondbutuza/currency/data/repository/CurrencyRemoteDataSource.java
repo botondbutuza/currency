@@ -30,8 +30,6 @@ public class CurrencyRemoteDataSource implements DataSource {
     public Maybe<CurrencyResponse> getCurrency(String date, String base) {
         return serverInterface
             .currencyForDate(date, base)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess(currencyResponse -> Observable
                 .fromIterable(currencyResponse.getRates().keySet())
                 .forEach(currency -> currencyResponse.addRate(new CurrencyRate(currency, currencyResponse.getRates().get(currency)))))
